@@ -1,0 +1,126 @@
+/*
+Miguel Vega
+Average student grades calculator
+11/16/2022
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+char calculateGrade(double);
+void calcAverage(ifstream&, int[], int, double&);
+void calclasseAverage(ifstream&, int[], double&, double&);
+
+int main(void) {
+	
+	//Declare Variables//create array
+	string name;
+	int i, numgrades = 5, grade[5];
+	double average;
+	double classAvg = 0;
+	char letter; ifstream inputfile;
+	
+
+	//read input file.
+	inputfile.open("grades.txt");
+
+	if (inputfile.fail())
+	
+	{
+		cout << "Error:File did not open\n";
+		return 1;
+	}
+
+	cout << "Names\t\tTest1\tTest2\tTest3\tTest4\tTest5\tAverage\tGrade\n\n";
+
+	inputfile >> name;
+
+	while (inputfile)
+	{
+		calcAverage(inputfile, grade, numgrades, average);
+		letter = calculateGrade(average);
+
+		cout << name << "\t\t";
+
+		for (i = 0; i < numgrades; i++)
+
+		cout << grade[i] << "\t";
+			
+		cout << average << "\t" << letter << "\n";
+
+		inputfile >> name;
+
+	}
+	//Creates class average for grades
+	calclasseAverage(inputfile, grade, average, classAvg);
+
+	cout << "\nClass Average = " << classAvg << endl << endl;
+
+	inputfile.close();
+
+
+
+	return 0;
+
+
+
+}
+
+//Function to retrieve the letter grade
+
+char calculateGrade(double average) {
+	
+	if (average >= 90)
+		return 'A';
+
+	else if (average >= 80)
+		return 'B';
+
+	else if (average >= 70)
+		return 'C';
+
+	else if (average >= 60)
+		return 'D';
+
+	else
+		return 'F';
+}
+
+// Reads an entry and calculates the average. 
+void calcAverage(ifstream& in, int grade[], int max, double& average) {
+
+	int i, sum = 0;
+	for (i = 0; i < max; i++) 
+	{
+		in >> grade[i];
+		sum += grade[i];
+	}
+
+	average = (double)sum / max;
+}
+
+// Calculates the class average
+
+
+
+void calclasseAverage(ifstream& in, int grade[], double& average, double& classAvg) 
+{
+	classAvg = 0;
+	for (int i = 7; i < 8; i++)
+	{
+		for (int j = 1; j < 22; j++)
+		{
+			in >> average;
+			classAvg = classAvg + average;
+
+		}
+
+	}
+
+	classAvg = classAvg / 20;
+
+}
